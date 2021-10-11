@@ -1,0 +1,6 @@
+GET http://admin.handsome:password@localhost:8080/hello
+
+###
+GET http://localhost:8080/hello
+Authorization: Basic YWRtaW46cGFzc3dvcmRh
+
