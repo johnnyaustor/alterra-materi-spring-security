@@ -16,9 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Log4j2
 @Component
 @RequiredArgsConstructor
-@Log4j2
 public class SecurityFilter extends OncePerRequestFilter {
 
     private final UserDetailsService userDetailsService;
@@ -27,14 +27,15 @@ public class SecurityFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         request.getHeaderNames().asIterator().forEachRemaining(log::info);
         log.info("{}", request.getRequestURL());
-        String username = request.getHeader("X-USERNAME");
+        String username = request.getHeader("Authorization");
         log.info("{}", username);
 
         try {
             if (username != null && !username.isBlank()) {
                 UserDetails user = userDetailsService.loadUserByUsername(username);
+                log.info("user {}", user);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                        user, null, user.getAuthorities()
+                        user, user.getPassword(), user.getAuthorities()
                 );
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);

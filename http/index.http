@@ -1,6 +1,15 @@
-GET http://admin.handsome:password@localhost:8080/hello
+GET http://user:8ccac474-b5fa-46a5-92bc-d7dbbc1b6599@localhost:8080/users
 
 ###
-GET http://localhost:8080/hello
-Authorization: Basic YWRtaW46cGFzc3dvcmRh
+GET http://localhost:8080/users/info
+Authorization: Basic dXNlcjpwYXNzd29yZA==
+
+###
+POST http://localhost:8080/auth/register
+Authorization: Basic dXNlcjpwYXNzd29yZA==
+Content-Type: application/json
+
+{
+
+}
 
