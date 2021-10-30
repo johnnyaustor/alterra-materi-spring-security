@@ -1,15 +1,8 @@
-GET http://user:8ccac474-b5fa-46a5-92bc-d7dbbc1b6599@localhost:8080/users
+GET {{host}}/users
 
 ###
-GET http://localhost:8080/users/info
-Authorization: Basic dXNlcjpwYXNzd29yZA==
+GET {{host}}/users/info
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2MzU1OTA5OTIsImlhdCI6MTYzNTU5MDM5MiwidXNlcm5hbWUiOiJ1c2VyIn0.bCrgUrF_g90qf9tXgyRRc-mKmnkFq8bgeGr_ZWolVSJ2ejs5o-orrS-Fqy26vVeXcQgSLSVT_oApLNhpCiY63w
 
-###
-POST http://localhost:8080/auth/register
-Authorization: Basic dXNlcjpwYXNzd29yZA==
-Content-Type: application/json
 
-{
-
-}
 

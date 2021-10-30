@@ -1,0 +1,17 @@
+### register
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "password"
+}
+
+###token
+POST http://localhost:8080/auth/token
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "password"
+}

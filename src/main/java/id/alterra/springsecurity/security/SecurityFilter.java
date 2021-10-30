@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -20,20 +21,20 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class SecurityFilter extends OncePerRequestFilter {
+    private static final String JWT_HEADER = "Authorization";
+    private static final String JWT_TOKEN_PREFIX = "Bearer ";
 
     private final UserDetailsService userDetailsService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        request.getHeaderNames().asIterator().forEachRemaining(log::info);
-        log.info("{}", request.getRequestURL());
-        String username = request.getHeader("Authorization");
-        log.info("{}", username);
-
         try {
-            if (username != null && !username.isBlank()) {
+            String token = getJWTFromRequest(request);
+            if (token != null && !token.isBlank() && jwtTokenProvider.validateToken(token)) {
+                String username = jwtTokenProvider.getUsername(token);
+                log.info("username : {}", username);
                 UserDetails user = userDetailsService.loadUserByUsername(username);
-                log.info("user {}", user);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         user, user.getPassword(), user.getAuthorities()
                 );
@@ -45,5 +46,13 @@ public class SecurityFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private String getJWTFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader(JWT_HEADER);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(JWT_TOKEN_PREFIX)) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
 }
