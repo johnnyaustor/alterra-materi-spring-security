@@ -2,11 +2,14 @@ package id.alterra.springsecurity.security;
 
 import id.alterra.springsecurity.model.User;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,8 +18,7 @@ import java.util.Map;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${jwt.secret}")
-    private String secret;
+    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     @Value("${jwt.expiration-time}")
     private Long expiration;
@@ -31,16 +33,18 @@ public class JwtTokenProvider {
         claims.put("username", user.getUsername());
 
         return Jwts.builder()
+                .setId(user.getId().toString()) // with claim, this will be replaced
+                .setSubject(user.getUsername()) // with claim, this will be replaced
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .signWith(key)
                 .compact();
     }
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (SignatureException ex) {
             log.error("Invalid Jwt Signature: {}", ex.getMessage());
@@ -57,7 +61,7 @@ public class JwtTokenProvider {
     }
 
     public String getUsername(String token) {
-        Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
         return claims.get("username").toString();
     }
 

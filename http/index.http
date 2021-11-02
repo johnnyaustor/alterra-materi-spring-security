@@ -2,7 +2,7 @@ GET {{host}}/users
 
 ###
 GET {{host}}/users/info
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2MzU1OTA5OTIsImlhdCI6MTYzNTU5MDM5MiwidXNlcm5hbWUiOiJ1c2VyIn0.bCrgUrF_g90qf9tXgyRRc-mKmnkFq8bgeGr_ZWolVSJ2ejs5o-orrS-Fqy26vVeXcQgSLSVT_oApLNhpCiY63w
+Authorization: Bearer {{token}}
 
 
 

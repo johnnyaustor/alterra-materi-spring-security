@@ -22,4 +22,11 @@ public class PasswordTest {
         String encoded = Base64.getEncoder().encodeToString(userPass.getBytes());
         log.info("userPass: {}, encode: {}", userPass, encoded);
     }
+
+    @Test
+    public void decodeBase64() {
+        String base64 = "eyJleHAiOjE2MzU4Njc5NTQsImlhdCI6MTYzNTg2NzM1NCwidXNlcm5hbWUiOiJ1c2VyIn0";
+        byte[] decode = Base64.getDecoder().decode(base64);
+        log.info("{}", new String(decode));
+    }
 }
