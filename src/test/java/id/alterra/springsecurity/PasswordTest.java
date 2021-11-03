@@ -3,6 +3,11 @@ package id.alterra.springsecurity;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
 import java.util.Base64;
 
@@ -12,6 +17,20 @@ public class PasswordTest {
     @Test
     public void generatePassword() {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String password = encoder.encode("password");
+        log.info(password);
+    }
+
+    @Test
+    public void passwordEncoder_sha256() {
+        PasswordEncoder encoder = new StandardPasswordEncoder();
+        String password = encoder.encode("password");
+        log.info(password);
+    }
+
+    @Test
+    public void passwordEncoder_pbkdf2() {
+        PasswordEncoder encoder = new Pbkdf2PasswordEncoder();
         String password = encoder.encode("password");
         log.info(password);
     }

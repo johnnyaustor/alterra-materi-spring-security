@@ -1,4 +1,9 @@
-GET {{host}}/users
+###
+GET http://user:e46a0473-c984-460e-9040-a1ba36733a89@localhost:8080/users
+
+###
+GET http://localhost:8080/users
+Authorization: Basic admin passwords
 
 ###
 GET {{host}}/users/info

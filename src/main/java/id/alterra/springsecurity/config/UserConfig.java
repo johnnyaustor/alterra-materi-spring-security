@@ -7,14 +7,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
-//@Configuration
+@Configuration
 public class UserConfig {
 
-//    @Bean
+    @Bean
     public UserDetailsService users() {
         UserDetails admin = User.builder()
                 .username("admin")
-                .password("{bcrypt}$2a$10$95C6WnLIuHLx14EaSLilfuy6x8q6Pv/KrrLyKz9zK5w9lcdML7rzC")
+                .password("{noop}password")
                 .roles("ADMIN")
                 .build();
 
