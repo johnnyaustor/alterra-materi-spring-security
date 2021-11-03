@@ -1,6 +1,5 @@
 package id.alterra.springsecurity.security;
 
-import id.alterra.springsecurity.model.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
@@ -24,18 +23,18 @@ public class JwtTokenProvider {
     private Long expiration;
 
     public String generateToken(Authentication authentication) {
-        final User user = (User) authentication.getPrincipal();
+        // final User user = (User) authentication.getPrincipal();
 
         Date now = new Date(System.currentTimeMillis());
         Date expiryDate = new Date(now.getTime() + expiration);
 
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("username", user.getUsername());
+//        Map<String, Object> claims = new HashMap<>();
+//        claims.put("username", user.getUsername());
 
         return Jwts.builder()
-                .setId(user.getId().toString()) // with claim, this will be replaced
-                .setSubject(user.getUsername()) // with claim, this will be replaced
-                .setClaims(claims)
+                .setId("user.getId().toString()") // with claim, this will be replaced
+                .setSubject("user.getUsername()") // with claim, this will be replaced
+                //.setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(key)
