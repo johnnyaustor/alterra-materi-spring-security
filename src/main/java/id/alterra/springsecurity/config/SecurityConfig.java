@@ -1,6 +1,5 @@
 package id.alterra.springsecurity.config;
 
-import id.alterra.springsecurity.security.SecurityEntryPoint;
 import id.alterra.springsecurity.security.SecurityFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +21,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userService;
-    //private final SecurityEntryPoint securityEntryPoint;
     private final SecurityFilter securityFilter;
 
     @Bean
@@ -50,7 +48,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
         // remove session
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        // http.exceptionHandling().authenticationEntryPoint(securityEntryPoint);
         // filter jwt
          http.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
     }
